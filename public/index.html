@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinAI - Asisten Keuangan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">F</span> FinAI</div>
+    <div class="topbar-right">
+      <span id="userName"></span>
+      <button class="btn ghost small" id="logoutBtn">Keluar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="main-col">
+      <div class="toolbar">
+        <div>
+          <h1>Ringkasan keuangan</h1>
+          <div class="muted" id="monthText"></div>
+        </div>
+        <input type="month" id="monthPicker" aria-label="Pilih bulan">
+      </div>
+
+      <div class="stats">
+        <div class="card stat balance">
+          <div class="label">Selisih bulan ini</div>
+          <div class="value" id="sumBalance">Rp0</div>
+          <div class="delta" id="deltaBalance">&nbsp;</div>
+        </div>
+        <div class="card stat">
+          <div class="label">Pemasukan</div>
+          <div class="value income" id="sumIncome">Rp0</div>
+          <div class="delta" id="deltaIncome">&nbsp;</div>
+        </div>
+        <div class="card stat">
+          <div class="label">Pengeluaran</div>
+          <div class="value expense" id="sumExpense">Rp0</div>
+          <div class="delta" id="deltaExpense">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h2>Pengeluaran per kategori</h2></div>
+          <div class="chart-box"><canvas id="donut"></canvas></div>
+          <div class="empty hidden" id="donutEmpty">Belum ada pengeluaran di bulan ini.</div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Tren 6 bulan</h2></div>
+          <div class="chart-box"><canvas id="bars"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Catat transaksi</h2>
+          <div class="seg" id="typeSeg">
+            <button type="button" data-type="expense" class="active">Pengeluaran</button>
+            <button type="button" data-type="income">Pemasukan</button>
+          </div>
+        </div>
+
+        <div class="quick">
+          <input id="quickText" placeholder='Catat cepat pakai AI, contoh: "tadi beli makan siang 25 ribu"' maxlength="300">
+          <button class="btn" id="quickBtn" type="button">✨ Isi otomatis</button>
+        </div>
+
+        <form id="trxForm" class="form-grid">
+          <div>
+            <label for="fAmount">Nominal (Rp)</label>
+            <input id="fAmount" type="number" min="1" step="1" inputmode="numeric" placeholder="25000" required>
+          </div>
+          <div>
+            <label for="fCategory">Kategori</label>
+            <select id="fCategory" required></select>
+          </div>
+          <div>
+            <label for="fDate">Tanggal</label>
+            <input id="fDate" type="date" required>
+          </div>
+          <div class="span2" style="grid-column: span 1">
+            <label for="fDesc">Catatan</label>
+            <input id="fDesc" maxlength="255" placeholder="Opsional">
+          </div>
+          <div style="grid-column: 1 / -1">
+            <button class="btn" type="submit">Simpan transaksi</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Riwayat transaksi</h2><span class="muted" id="trxCount"></span></div>
+        <ul class="trx-list" id="trxList"></ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Target tabungan</h2></div>
+        <div class="goals" id="goals"></div>
+        <form class="goal-form" id="goalForm">
+          <div><label for="gTitle">Target baru</label><input id="gTitle" placeholder="Misal: Laptop baru" maxlength="120" required></div>
+          <div><label for="gTarget">Nominal (Rp)</label><input id="gTarget" type="number" min="1" placeholder="8000000" required></div>
+          <div><label for="gDeadline">Tenggat</label><input id="gDeadline" type="date"></div>
+          <button class="btn soft" type="submit">Tambah</button>
+        </form>
+      </div>
+    </section>
+
+    <aside class="ai-col">
+      <div class="card chat">
+        <div class="chat-head">
+          <div class="title"><span class="dot"></span> Asisten FinAI</div>
+          <div style="display:flex; gap:.4rem">
+            <button class="btn soft small" id="insightBtn" type="button">💡 Saran hemat</button>
+            <button class="btn ghost small" id="clearChat" type="button" title="Hapus riwayat chat">Hapus</button>
+          </div>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chips" id="chips">
+          <button class="chip" type="button">Bulan ini paling boros di mana?</button>
+          <button class="chip" type="button">Bandingkan dengan bulan lalu</button>
+          <button class="chip" type="button">Berapa yang bisa kutabung per bulan?</button>
+        </div>
+        <form class="chat-form" id="chatForm">
+          <input id="chatInput" placeholder="Tanya soal keuanganmu..." maxlength="500" autocomplete="off">
+          <button class="btn" id="chatSend" type="submit">Kirim</button>
+        </form>
+        <div class="disclaimer">Jawaban AI berdasarkan datamu dan bukan nasihat keuangan profesional.</div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

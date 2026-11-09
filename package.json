@@ -1,0 +1,21 @@
+{
+  "name": "finai",
+  "version": "1.0.0",
+  "description": "FinAI - Asisten keuangan pribadi berbasis AI (Node.js + MySQL + OpenRouter)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed-demo.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.0"
+  }
+}

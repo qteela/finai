@@ -1,0 +1,44 @@
+# Jalankan semuanya: docker compose up -d --build
+# Nilai ${...} dibaca otomatis dari file .env di folder yang sama.
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-finai_root}
+      MYSQL_DATABASE: finai
+    ports:
+      - "3307:3306"   # opsional: akses dari DBeaver/Workbench lewat localhost:3307
+    volumes:
+      - db_data:/var/lib/mysql
+      # schema.sql otomatis dijalankan HANYA saat volume db_data pertama kali dibuat
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: db            # nama service di atas, bukan localhost
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-finai_root}
+      DB_NAME: finai
+      JWT_SECRET: ${JWT_SECRET:-ganti-dengan-teks-acak-yang-panjang}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODELS: ${OPENROUTER_MODELS:-openrouter/free}
+
+volumes:
+  db_data:

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk - FinAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="auth-wrap">
+    <section class="auth-hero">
+      <div class="brand"><span class="logo">F</span> FinAI</div>
+      <h1>Uang saku aman, kuliah tenang.</h1>
+      <p>Catat pemasukan dan pengeluaran, lihat ke mana uangmu pergi, lalu tanya asisten AI untuk saran hemat yang sesuai datamu.</p>
+      <ul>
+        <li><span>📊</span> Dashboard bulanan dan grafik kategori</li>
+        <li><span>💬</span> Tanya AI: "bulan ini paling boros di mana?"</li>
+        <li><span>⚡</span> Catat cepat: "tadi beli makan 25 ribu"</li>
+        <li><span>🎯</span> Target tabungan dengan progres</li>
+      </ul>
+    </section>
+
+    <section class="auth-card">
+      <form class="auth-form" id="authForm" novalidate>
+        <div>
+          <h1 id="formTitle">Selamat datang</h1>
+          <p class="muted" id="formSub" style="margin:.3rem 0 0">Masuk untuk melanjutkan.</p>
+        </div>
+
+        <div class="seg">
+          <button type="button" data-mode="login" class="active">Masuk</button>
+          <button type="button" data-mode="register">Daftar</button>
+        </div>
+
+        <div id="errorBox" class="form-error hidden"></div>
+
+        <div id="nameWrap" class="hidden">
+          <label for="name">Nama</label>
+          <input id="name" autocomplete="name" placeholder="Nama kamu">
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="email" placeholder="nama@email.com" required>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="Minimal 6 karakter" required>
+        </div>
+
+        <button class="btn" id="submitBtn" type="submit">Masuk</button>
+        <p class="demo-hint">Akun demo (setelah <code>npm run seed</code>): demo@finai.test / demo123</p>
+      </form>
+    </section>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>
